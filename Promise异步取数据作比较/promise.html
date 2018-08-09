@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var a=1;
+        function log(s){
+            console.log(s);
+        }
+
+        function cook(){
+            log("进入cook函数");
+            var c=new Promise(function(resolve,reject){
+                if(a==1){
+                    resolve(log("在cook的promise的resolve函数里面1"));
+                    a=2;
+                }
+                else{
+                    reject(log("我在cook的promise的reject函数里面2"));   
+                }
+            });
+            return c;
+        }
+
+
+        function eat(){
+            log("进入eat函数里面");
+            var e=new Promise(function(resolve,reject){
+                log("我在eat的promise里面");
+                if(a==2){
+                    
+                    setTimeout(function(){
+                        resolve(log("在eat的promise的resolve函数里面2"))
+                    },1000);
+                    
+                }
+                else{
+                    reject(log("我在eat的promise的reject函数里面1"));
+                    
+                }
+            })
+            return e;
+        }
+
+        function wash(){
+            log("进入wash函数里面");
+            var w=new Promise(function(resolve,reject){
+                log("我在wash的promise里面");
+                if(a==3){
+                    resolve(log("在wash的promise的resolve函数里面3"));
+                    a=4;
+                }
+                else{
+                    reject(log("我在wash的promise的reject函数里面4"));
+                    
+                }
+            })
+            return w;
+        }
+
+
+        // cook().then(eat).then(wash);
+        // cook().then(eat).then(wash).catch(function(data){
+        //     log(data)
+        // });
+
+        // Promise.all([cook(),eat(),wash()]).then(function(data){
+        //     log("全部代码都执行完")
+        // }).catch(function(){
+        //     log("有代码出错啦")
+        // })
+        Promise.race([cook(),eat(),wash()]).then(function(){
+            log("有方法执行完")
+        }).catch(function(){
+            log("有方法出错啦")
+        })
+    </script>
+</body>
+</html>

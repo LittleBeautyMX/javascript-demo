@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+    <script>
+        //使用promise进行对比
+        var a="";
+        var b="";
+        function ajax1(){
+            console.log("enter ajax1");
+            var promise1=new Promise(function(resolve,reject){
+                console.log("enter promise1");
+                $.ajax({
+                    type:"get",
+                    url:"https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd="+"a",
+                    dataType:"jsonp",
+                    jsonp:"cb",
+                    success:function(data){
+                    //   console.log(data.s[0])
+                        a=data.s[0];
+                        resolve(a);
+                    },
+                    error:function(error){
+                        reject("ajax1 error")
+                    }
+                });
+            });
+            return promise1;
+            
+        }
+        function ajax2(){
+            console.log("enter ajax2");
+            var promise2=new Promise(function(resolve,reject){
+                console.log("enter promise2");
+                $.ajax({
+                    type:"get",
+                    url:"https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd="+"b",
+                    dataType:"jsonp",
+                    jsonp:"cb",
+                    success:function(data){
+                    //   console.log(data.s[0])
+                        b=data.s[0];
+                        resolve(b);
+                    },
+                    error:function(error){
+                        reject("ajax2 error")
+                    }
+                })
+            });
+            return promise2;
+        }
+        function compare(){
+            if(a!=b){
+                console.log("different")
+            }
+            else{
+                console.log("same")
+            }
+        }
+        ajax1().then(ajax2).then(compare).then(function(data){
+            console.log(data)
+        });
+
+        //单纯的取数据对比
+        // var a="";
+        // var b="";
+        // $.ajax({
+        //     type:"get",
+        //     url:"https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd="+"a",
+        //     dataType:"jsonp",
+        //     jsonp:"cb",
+        //     success:function(data){
+        //     //   console.log(data.s[0])
+        //         a=data.s[0];
+        //         // resolve(a);
+        //     },
+        //     error:function(error){
+        //         reject("ajax1 error")
+        //     }
+        // });
+        // $.ajax({
+        //     type:"get",
+        //     url:"https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd="+"b",
+        //     dataType:"jsonp",
+        //     jsonp:"cb",
+        //     success:function(data){
+        //     //   console.log(data.s[0])
+        //         b=data.s[0];
+        //         // resolve(a);
+        //     },
+        //     error:function(error){
+        //         reject("ajax1 error")
+        //     }
+        // });
+        // function compare(){
+        //     if(a!=b){
+        //         console.log("different")
+        //     }
+        //     else{
+        //         console.log("same")
+        //     }
+        // }
+        // compare();
+
+    </script>
+</body>
+</html>
